@@ -51,7 +51,13 @@ public class MyDispatcherServlet extends HttpServlet {
         resp.getWriter().println(requestPath);
 
 
-        // todo: через рефлексию получаем список ModelAndView
+        // todo: через рефлексию список контроллеров. у них методы с GetMapping и там
+        //  либо есть модель либо только вью
+
+        // todo: через handlermapping получаю список классов контроллеров
+        // todo: они возвращают modalandview (а там список путь и ключ/значение)
+        // todo: вьюрезолвер берет эти modalandview и идет по списку получая классы вью
+        // todo: классы вью делают форвард на нужные вью и сохраняют модели в атрибутах
 
 //        String packageToScan = "org/example";
 //        Reflections scanner = new Reflections("org.example.site");
@@ -63,7 +69,9 @@ public class MyDispatcherServlet extends HttpServlet {
 ////            resp.getWriter().println(cls.getClass().getName());
 //            System.out.println(cls.getName());
 //        }
-        // получаем тут списки кастомных аннотаций с путями
+
+//        MyModelAndView modelAndViews =
+
     }
 }
 

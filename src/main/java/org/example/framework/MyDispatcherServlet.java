@@ -1,38 +1,67 @@
 package org.example.framework;
 
-import org.example.site.Config;
+import org.example.site.config.Config;
+import org.reflections.Reflections;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+
+/**
+ * получает запрос
+ * с помощью MyHandlerMapping понимает, какой контроллер нужен
+ * запрос передается в контроллер и возвращается ModelAndView (модель + view)
+ * с помощью MyViewResolver находит нужное представление
+ * в представление передатся наши данные
+ * выводится представление или, если его нет, ошибка со статусным кодом
+ */
 
 @WebServlet("/")
 public class MyDispatcherServlet extends HttpServlet {
-//    private ApplicationContext context;
+    private ApplicationContext context;
+    private ApplicationContext xmlConfigContext; // todo: сделать для xml файла
+
+    private MyHandlerMapping handlerMapping;
 
     @Override
     public void init() throws ServletException {
         super.init();
+        // ссылаемся на созданный конфиг java класса
+        // todo: проверить, какой именно контекст надо брать
+        context = new AnnotationConfigApplicationContext(Config.class);
+//        handlerMapping = context.getBean(MyHandlerMapping.class);
 
-        ApplicationContext javaConfigContext = new AnnotationConfigApplicationContext(Config.class);
-
-//        todo: сделать для xml файла
-        ApplicationContext xmlConfigContext = new ClassPathXmlApplicationContext("config.xml");
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String requestPath = req.getRequestURI().substring(req.getContextPath().length()); // todo: отдельный класс на получение
+        resp.getWriter().println(requestPath);
 
+//        String packageToScan = "org/example";
+//        Reflections scanner = new Reflections("org.example.site");
+//        scanner.
+//
+//        System.out.println(classes.size());
+//
+//        for (Class<?> cls : classes) {
+////            resp.getWriter().println(cls.getClass().getName());
+//            System.out.println(cls.getName());
+//        }
+        // получаем тут списки кастомных аннотаций с путями
     }
 }
 
-// todo: точка входа
-// todo: routing
-// todo: ioc-container
-// todo: событийная модель
+

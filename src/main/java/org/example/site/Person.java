@@ -1,4 +1,4 @@
 package org.example.site;
 
-public class Config {
+public class Person {
 }

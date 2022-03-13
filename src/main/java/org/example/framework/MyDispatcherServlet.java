@@ -50,6 +50,9 @@ public class MyDispatcherServlet extends HttpServlet {
         String requestPath = req.getRequestURI().substring(req.getContextPath().length()); // todo: отдельный класс на получение
         resp.getWriter().println(requestPath);
 
+
+        // todo: через рефлексию получаем список ModelAndView
+
 //        String packageToScan = "org/example";
 //        Reflections scanner = new Reflections("org.example.site");
 //        scanner.

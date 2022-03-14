@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * FROM WEBSITE
@@ -26,8 +27,8 @@ public class MyDispatcherServlet extends HttpServlet {
     private MyController controller;
     private MyModelAndView modelAndView;
     private MyViewResolver viewResolver;
-//    private MyView view;
-//    private MyModel model;
+    private MyView view;
+    private MyModel model;
 
     @Override
     public void init() throws ServletException {
@@ -41,10 +42,18 @@ public class MyDispatcherServlet extends HttpServlet {
         if (handlerMapping.hasController(req)) {
             controller = handlerMapping.getController(req);
             modelAndView = controller.doAction();
-            viewResolver.showView(modelAndView, req, resp);
+            model = modelAndView.getModel();
+            view = modelAndView.getView();
+
+            Map<HttpServletRequest, HttpServletResponse> requestAndResponse = viewResolver.showView(view, model, req, resp);
+            req = requestAndResponse.keySet().iterator().next();
+            resp = requestAndResponse.get(req);
+//            service(req, resp);
+//            return;
         } else {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             viewResolver.showViewNotFound(req, resp);
+            return;
         }
     }
 }

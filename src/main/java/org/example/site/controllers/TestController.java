@@ -1,8 +1,8 @@
 package org.example.site.controllers;
 
-import org.example.framework.annotations.MyController;
+import org.springframework.stereotype.Controller;
 
-@MyController
+@Controller
 public class TestController {
 
 }

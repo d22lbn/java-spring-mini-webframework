@@ -1,5 +1,5 @@
 package org.example.framework;
 
-public class MyViewResolver {
-
+public interface MyViewResolver {
+    MyView getView(MyModelAndViewImpl modelAndView);
 }

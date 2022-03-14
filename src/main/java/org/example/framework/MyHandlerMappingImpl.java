@@ -1,20 +1,34 @@
 package org.example.framework;
 
-import org.example.site.controllers.TestController;
-import org.springframework.context.ApplicationContext;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyHandlerMappingImpl implements MyHandlerMapping {
+    private Map<String, MyController> routesAndControllers = new HashMap<>();
 
     @Override
-    public MyController getController(HttpServletRequest request, ApplicationContext context) {
-        String path = cleanRequestPath(request);
-        if (path.equals("")) {
-            MyController controller = (MyController) context.getBean(TestController.class);
-            return controller;
+    public void addController(HttpServletRequest request, MyController controller) {
+        if (!hasController(request)) {
+            routesAndControllers.put(cleanRequestPath(request), controller);
+        } else {
+            System.out.println("Контроллер существует");
         }
-        return null; // todo: если нет в контексте обработать этот момент
+    }
+
+    @Override
+    public MyController getController(HttpServletRequest request) {
+        if (hasController(request)) {
+            return routesAndControllers.get(cleanRequestPath(request));
+        } else {
+            System.out.println("Контроллера не существует"); // todo: посмотреть в файле properties
+            return null;
+        }
+    }
+
+    @Override
+    public boolean hasController(HttpServletRequest request) {
+        return routesAndControllers.containsKey(cleanRequestPath(request));
     }
 
     private String cleanRequestPath(HttpServletRequest req) {

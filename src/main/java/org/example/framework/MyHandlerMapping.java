@@ -7,5 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface MyHandlerMapping {
 //    HandlerExecutionChain getHandler(HttpServletRequest request);
 
-    MyController getController(HttpServletRequest request, ApplicationContext context);
+    void addController(HttpServletRequest request, MyController controller);
+    MyController getController(HttpServletRequest request);
+    boolean hasController(HttpServletRequest request);
 }

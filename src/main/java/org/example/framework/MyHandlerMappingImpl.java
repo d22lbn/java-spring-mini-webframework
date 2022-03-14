@@ -21,14 +21,19 @@ public class MyHandlerMappingImpl implements MyHandlerMapping {
         if (hasController(request)) {
             return routesAndControllers.get(cleanRequestPath(request));
         } else {
-            System.out.println("Контроллера не существует"); // todo: посмотреть в файле properties
+            System.out.println("Контроллера не существует");
             return null;
         }
     }
 
     @Override
     public boolean hasController(HttpServletRequest request) {
-        return routesAndControllers.containsKey(cleanRequestPath(request));
+        if (routesAndControllers.containsKey(cleanRequestPath(request))) {
+            return true;
+        } else {
+            // todo: посмотреть в файле properties
+            return false;
+        }
     }
 
     private String cleanRequestPath(HttpServletRequest req) {

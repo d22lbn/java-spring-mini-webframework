@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/** FROM WEBSITE
+/**
+ * FROM WEBSITE
  * First, DispatcherServlet (servlet manager) receives a request, then it looks at its settings to understand which controller to use (in the figure Handler Mapping).
  * After receiving the controller name, the request is passed to it (in the figure Controller). The request is processed in the controller and ModelAndView is sent back (the model is the data itself; view is how to display this data).
  * DispatcherServlet, based on the received ModelAndView, searches for which view to use (ViewResolver) and receives the name of the View in the response
@@ -25,8 +26,8 @@ public class MyDispatcherServlet extends HttpServlet {
     private MyController controller;
     private MyModelAndView modelAndView;
     private MyViewResolver viewResolver;
-    private MyView view;
-    private MyModel model;
+//    private MyView view;
+//    private MyModel model;
 
     @Override
     public void init() throws ServletException {
@@ -37,13 +38,14 @@ public class MyDispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
-//        MyController controller = handlerMapping.getController(req, context);
-//        MyModelAndViewImpl modelAndView = controller.doAction();
-//        MyViewResolver viewResolver = new MyViewResolverImpl();
-//        MyView view = viewResolver.getView(modelAndView);
-//        view.showView(viewResolver, req, resp);
+        if (handlerMapping.hasController(req)) {
+            controller = handlerMapping.getController(req);
+            modelAndView = controller.doAction();
+            viewResolver.showView(modelAndView, req, resp);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            viewResolver.showViewNotFound(req, resp);
+        }
     }
 }
 
